@@ -1,0 +1,150 @@
+package RSA;
+import java.util.*;
+public class main {
+	//ŷ������㷨
+	static long x,y;
+	public static void exgcd_56(long a_56,long p_56){
+			if(p_56==0){
+				x=1;
+				y=0;
+				return;
+			}
+			exgcd_56(p_56,a_56%p_56);
+			long k=x;
+			x=y;
+			y=k-a_56/p_56*y;
+		}
+	public static long ld(long a_56,long p_56) {
+		exgcd_56(a_56,p_56);
+		return y;
+	}
+	//��������ַ���תΪ�����ַ���ascii��
+	public static long toAs_56(String str) {
+		char[] c=str.toCharArray();
+		long[] i = new long[c.length];
+		StringBuffer sb =new StringBuffer();
+		for(int j=0;j<c.length;j++) {
+			i[j] = (long)c[j];
+			sb.append(i[j]);
+			}
+		String ss=sb.toString();
+		long m = Integer.parseInt(ss);
+		return m;
+	}
+	//����
+	public static long[] gp_56(long ml_56,long n_56) {
+		int k=0;
+		long test=ml_56;
+		do{
+			k++;
+		}while((test=test/n_56)!=0);
+		long[] m = new long[k];
+		for(int i=0;ml_56>0;i++) {
+			m[i]=ml_56%n_56;
+			ml_56=ml_56/n_56;
+		}
+		return m;
+	}
+	//����ת������ʮ��������ת��Ϊ��������������
+	public static int[] toBin_56(long i_56) {
+		String s = Long.toBinaryString(i_56);
+		int[] j = new int[s.length()];
+		for(int k=0;k<s.length();k++) {
+			j[k]=s.charAt(k)-'0';
+		}
+		return j;
+	}
+	//ƽ����
+	public static long spb_56(long m_56,long e_56,long n_56) {
+		System.out.println("ƽ����");
+		int j[] = toBin_56(e_56);
+		long s=1;
+		for(int i=j.length-1;i>=0;i--) {
+			s=s*s%n_56;
+			if(j[j.length-i-1]!=0) {
+				s=(int) (s*m_56%n_56);
+			}
+			System.out.println("i="+i+", "+s);
+		}
+		System.out.println("���ܺ������Ϊ��"+s);
+		return s;
+	}	
+	//ģ�ظ�ƽ������
+	public static long mrs_56(long c_56,long d_56,long n_56) {
+		System.out.println("RSA����ģ��������� ָ�� ģ�� ��"+c_56+" "+d_56+" "+n_56);
+		int j[] = toBin_56(d_56);
+		long demo =1;
+		long k=c_56;
+		System.out.println("ģ�ظ�ƽ��");
+		for(int i=0;i<j.length;i++) {
+			System.out.print("i="+i+", ");
+			if(j[j.length-1-i]!=0) {
+				demo=demo*k%n_56;
+			}
+			k=k*k%n_56;
+			System.out.println(demo);
+		}
+		System.out.println("���ܺ������Ϊ��"+demo);
+		return demo;
+	}
+	//���ڷ��������ĺ����ģ��Ϊ���Ƶ�ת��
+	public static long toOr_56(long m[],long n) {
+		long or=m[0];
+		long c=n;
+		for(int i=1;i<m.length;i++) {
+			or=or+m[i]*c;
+			c=c*c;
+		}
+		return or;
+	}
+	//��ASCII�ַ���תΪ��Ӧ���ַ���
+	public static String toStr_56(long as) {
+		String s = String.valueOf(as);
+		String[] s1=new String[s.length()/2];
+		int[] a=new int[s.length()/2];
+		char[] b = new char[s.length()/2];
+		for(int i=0;i<=s.length()-2;i+=2) {
+			s1[i/2]=s.substring(i,i+2);
+			a[i/2]=Integer.valueOf(s1[i/2]);
+		    b[i/2]=(char)a[i/2];
+		}
+		String x = new String(b);
+		return x;
+	}
+	public static void main(String[] args) {
+		Scanner in = new Scanner(System.in);
+		System.out.print("��˳�����빫Կ����������e p q:");
+	    long e,p,q;
+	    e=in.nextLong();
+		p=in.nextLong();
+		q=in.nextLong();
+	    long r = (p-1)*(q-1);
+		long n = p*q;
+		System.out.println("���ģ��n��"+n);
+		System.out.println("���ģ��n��ŷ��������"+r);
+		//����ŷ������
+		long d=ld(r,e);
+		System.out.println("���ģ��˽Կd��"+d);
+		System.out.print("������Ҫ���ܵ����ģ�");
+		String str = in.next();
+		long ml = toAs_56(str);
+//		���÷���
+		long m[]=gp_56(ml,n);
+		System.out.println("RSA����ģ��������� ָ�� ģ����"+ml+" "+e+" "+n);
+		for(int i=0;i<m.length;i++) {
+			System.out.println("RSA��"+i+"�� ���� ָ�� ģ����"+m[i]+" "+e+" "+n);
+			//����ƽ���˺���
+			long c = spb_56(m[i],e,n);
+			//����ģ�ظ�ƽ������
+			long a = mrs_56(c,d,n);
+			System.out.println();
+		}
+		long as = toOr_56(m,n);
+		System.out.println("���Ķ�Ӧ��ASCII��Ϊ��"+as);
+		System.out.println("����Ϊ��"+toStr_56(as));
+		
+	
+
+	}
+
+}
