@@ -1,0 +1,42 @@
+import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class LoginListener implements ActionListener {
+    JTextField textName2;   //  定义两个输入框变量     类名 对象名
+    JPasswordField textPwd2;
+
+    /**
+     * 查看 ActionListener 的 源码 重写监听器中的方法
+     * e
+     */
+
+    public void actionPerformed(ActionEvent e) {
+        // 获取按钮上的字符串
+        String btnstr = e.getActionCommand(); //定义变量 btnstr 通过getActionCommand（）方法 ，获取按钮上的字符串；
+        //验证监听器 监听点击按钮的动作事件
+        System.out.println(btnstr);
+        System.out.println("登录按钮被点击了");
+
+        //获取输入框的字符
+        String username = textName2.getText();
+        String pwd = textPwd2.getText();
+        System.out.println("点击按钮后获取用户名：" + username + "点击按钮后获取密码" + pwd);//验证是否获取用户数输入的username和pwd
+
+        //验证账号登录的半段
+        if (username.equals("admin") && pwd.equals("admin")) {
+            //写一个小弹窗
+            ClientTCP z=new ClientTCP();
+            try {
+                z.main1();
+            } catch (Exception exception) {
+                exception.printStackTrace();
+            }
+        } else {
+
+            JOptionPane.showMessageDialog(null,"登陆失败");
+            System.exit(0);
+        }
+    }
+
+}
